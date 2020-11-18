@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "740234746620",
+    "firebase_url": "https://todoappforkotlin.firebaseio.com",
+    "project_id": "todoappforkotlin",
+    "storage_bucket": "todoappforkotlin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740234746620:android:baa4024efb247245a3d579",
+        "android_client_info": {
+          "package_name": "com.example.todoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "740234746620-mmfkrjimchk37l8ueuiogiq62jgvkhgq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZQ1paEdaUs-pa1L0fYDu73I-AWqErBjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "740234746620-mmfkrjimchk37l8ueuiogiq62jgvkhgq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
