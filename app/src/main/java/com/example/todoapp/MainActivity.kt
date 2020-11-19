@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
@@ -19,19 +20,26 @@ import java.util.zip.Inflater
 
 class MainActivity : AppCompatActivity() {
     val db = FirebaseFirestore.getInstance()
+    val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        getTodo()
+    }
+
+    private fun getTodo() {
         val adapter = GroupAdapter<ViewHolder>()
-
+        val email = auth.currentUser?.email
         db.collection("todos").get()
-                .addOnCompleteListener {
-                    val documents = it.result
+            .addOnCompleteListener {
+                val documents = it.result
 
-                    if (documents != null) {
-                        for (document in documents) {
+                if (documents != null) {
+                    for (document in documents) {
+                        val owner = document.data.get("owner").toString()
+                        if (owner == email) {
                             val title = document.data.get("title").toString()
                             val content = document.data.get("content").toString()
                             val todo = Todo(title, content)
@@ -39,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-
+            }
         recycler_view_main.adapter = adapter
     }
 
