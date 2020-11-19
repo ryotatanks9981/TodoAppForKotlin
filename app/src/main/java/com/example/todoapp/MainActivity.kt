@@ -1,24 +1,65 @@
 package com.example.todoapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
+import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.todo_item_cell.view.*
+import java.util.zip.Inflater
 
 class MainActivity : AppCompatActivity() {
+    val db = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val adapter = GroupAdapter<ViewHolder>()
-        adapter.add(TodoItem(Todo("遊ぶ", "家で")))
-        adapter.add(TodoItem(Todo("遊ぶ", "友達の家で")))
-        adapter.add(TodoItem(Todo("遊ぶ", "カラオケ")))
+
+        db.collection("todos").get()
+                .addOnCompleteListener {
+                    val documents = it.result
+
+                    if (documents != null) {
+                        for (document in documents) {
+                            val title = document.data.get("title").toString()
+                            val content = document.data.get("content").toString()
+                            val todo = Todo(title, content)
+                            adapter.add(TodoItem(todo))
+                        }
+                    }
+                }
+
         recycler_view_main.adapter = adapter
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflator: MenuInflater = menuInflater
+        inflator.inflate(R.menu.nav_menu, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.create_todo -> {
+                val intent = Intent(this, CreateTodoActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
 
